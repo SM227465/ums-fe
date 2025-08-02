@@ -1,13 +1,14 @@
-import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../features/auth/hooks/useAuth';
 import { UserRole } from '../types';
+import type { ReactNode } from 'react';
 
-interface MainLayoutProps {
-  children: React.ReactNode;
+interface Props {
+  children: ReactNode;
 }
 
-const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
+const MainLayout = (props: Props) => {
+  const { children } = props;
   const { user, logout } = useAuth();
   const location = useLocation();
 

@@ -1,8 +1,7 @@
-import React from 'react';
 import { type User, UserRole } from '../../../types';
 import { useDeleteUser } from '../hooks/useUsers';
 
-interface UserTableProps {
+interface Props {
   users: User[];
   pagination?: {
     currentPage: number;
@@ -15,9 +14,8 @@ interface UserTableProps {
   currentUser?: User;
 }
 
-const UserTable: React.FC<UserTableProps> = ({ users, pagination, onPageChange, currentUser }) => {
-  console.log(users);
-
+const UserTable = (props: Props) => {
+  const { onPageChange, users, currentUser, pagination } = props;
   const deleteUserMutation = useDeleteUser();
 
   const handleDelete = (userId: string) => {
@@ -30,11 +28,11 @@ const UserTable: React.FC<UserTableProps> = ({ users, pagination, onPageChange, 
     if (!currentUser) return false;
 
     if (currentUser.role === UserRole.ADMIN) {
-      return user.id !== currentUser.id;
+      return user._id !== currentUser._id;
     }
 
     if (currentUser.role === UserRole.SUB_ADMIN) {
-      return user.parentId === currentUser.id;
+      return user.parentId?._id === currentUser._id;
     }
 
     return false;
@@ -68,7 +66,7 @@ const UserTable: React.FC<UserTableProps> = ({ users, pagination, onPageChange, 
           </thead>
           <tbody>
             {users.map((user) => (
-              <tr key={user.id}>
+              <tr key={user._id}>
                 <td>
                   <div className='user-info'>
                     <div className='user-avatar'>
@@ -95,7 +93,7 @@ const UserTable: React.FC<UserTableProps> = ({ users, pagination, onPageChange, 
                         <button className='btn-edit'>Edit</button>
                         <button
                           className='btn-delete'
-                          onClick={() => handleDelete(user.id)}
+                          onClick={() => handleDelete(user._id)}
                           disabled={deleteUserMutation.isPending}
                         >
                           Delete

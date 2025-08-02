@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
-import { useUsers } from '../features/users/hooks/useUsers';
+import { useState } from 'react';
 import { useAuth } from '../features/auth/hooks/useAuth';
-import { UserRole } from '../types';
 import UserFilters from '../features/users/components/UserFilters';
 import UserTable from '../features/users/components/UserTable';
+import { useUsers } from '../features/users/hooks/useUsers';
+import { UserRole } from '../types';
 
-const DashboardPage: React.FC = () => {
+const DashboardPage = () => {
   const { user } = useAuth();
+
   const [filters, setFilters] = useState({
     page: 1,
     limit: 10,
@@ -15,7 +16,6 @@ const DashboardPage: React.FC = () => {
   });
 
   const { data, isLoading, error } = useUsers(filters);
-  console.log({ data });
 
   const handleFilterChange = (newFilters: Partial<typeof filters>) => {
     setFilters((prev) => ({ ...prev, ...newFilters, page: 1 }));

@@ -1,7 +1,6 @@
-import React from 'react';
 import LoginForm from '../features/auth/components/LoginForm';
 
-const LoginPage: React.FC = () => {
+const LoginPage = () => {
   return (
     <div className='login-page'>
       <LoginForm />

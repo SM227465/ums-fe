@@ -16,7 +16,7 @@ class ApiService {
     API_CONFIG.ENDPOINTS.AUTH.SIGNUP,
     API_CONFIG.ENDPOINTS.AUTH.FORGOT_PASSWORD,
     API_CONFIG.ENDPOINTS.AUTH.RESET_PASSWORD,
-    API_CONFIG.ENDPOINTS.AUTH.REFRESH, // Refresh endpoint uses refresh token, not access token
+    API_CONFIG.ENDPOINTS.AUTH.REFRESH,
   ];
 
   constructor() {

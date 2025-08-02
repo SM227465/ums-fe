@@ -6,8 +6,6 @@ export const authService = {
   login: async (data: LoginFormData): Promise<AuthResponse> => {
     const response = await apiService.post(API_CONFIG.ENDPOINTS.AUTH.LOGIN, data);
 
-    console.log(response.data);
-
     return response.data as AuthResponse;
   },
 

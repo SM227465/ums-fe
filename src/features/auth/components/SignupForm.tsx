@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { UserRole } from '../../../types';
@@ -7,7 +7,7 @@ import { useAvailableParents } from '../../users/hooks/useUsers';
 import { useAuth } from '../hooks/useAuth';
 import { signupSchema, type SignupFormData } from '../schemas/validation';
 
-const SignupForm: React.FC = () => {
+const SignupForm = () => {
   const { signup, isSigningUp } = useAuth();
 
   const {
@@ -36,11 +36,7 @@ const SignupForm: React.FC = () => {
   }, [selectedRole, setValue]);
 
   const onSubmit = (data: SignupFormData) => {
-    signup(data, {
-      onSuccess(data, variables, context) {
-        console.log(data);
-      },
-    });
+    signup(data);
   };
 
   const shouldShowParentSelect = selectedRole && selectedRole !== UserRole.ADMIN;
@@ -160,7 +156,7 @@ const SignupForm: React.FC = () => {
                     Choose {selectedRole === UserRole.SUB_ADMIN ? 'an Admin' : 'a Sub-Admin'}
                   </option>
                   {availableParents?.map((parent: any) => (
-                    <option key={parent.id} value={parent._id}>
+                    <option key={parent._id} value={parent._id}>
                       {parent.firstName} {parent.lastName} ({parent.email})
                     </option>
                   ))}

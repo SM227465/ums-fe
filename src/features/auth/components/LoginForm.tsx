@@ -3,16 +3,9 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { loginSchema, type LoginFormData } from '../schemas/validation';
-import { useQueryClient } from '@tanstack/react-query';
-import { useCookies } from 'react-cookie';
-import { COOKIE_CONFIG } from '../../../config/api';
-import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
   const { login, isLoggingIn } = useAuth();
-  const queryClient = useQueryClient();
-  const [, setCookie] = useCookies([COOKIE_CONFIG.TOKEN_NAME]);
-  const navigate = useNavigate();
 
   const {
     register,
@@ -24,42 +17,13 @@ const LoginForm = () => {
   });
 
   const onSubmit = (data: LoginFormData) => {
-    login(data, {
-      onSuccess(data) {
-        const accessToken = data.tokens.access.token;
-        const expiresInMs = data.tokens.access.expiresIn;
-        const expirationDate = new Date(Date.now() + expiresInMs);
-
-        setCookie(COOKIE_CONFIG.TOKEN_NAME, accessToken, {
-          ...COOKIE_CONFIG.OPTIONS,
-          expires: expirationDate,
-        });
-
-        const refreshToken = data.tokens.refresh.token;
-        const refreshExpiresInMs = data.tokens.refresh.expiresIn;
-        const refreshExpirationDate = new Date(Date.now() + refreshExpiresInMs);
-
-        setCookie(COOKIE_CONFIG.REFRESH_TOKEN_NAME, refreshToken, {
-          ...COOKIE_CONFIG.OPTIONS,
-          expires: refreshExpirationDate,
-        });
-        queryClient.setQueryData(['user'], data.user);
-        navigate('/dashboard');
-      },
-    });
+    login(data);
   };
 
   return (
     <div className='login-form-container'>
       <div className='login-form-card'>
         <h2 className='form-title'>Sign In</h2>
-        {/* 
-        {loginError && (
-          <div className='error-message'>
-            {loginError.response?.data?.message || 'Login failed. Please try again.'}
-          </div>
-        )} */}
-
         <form onSubmit={handleSubmit(onSubmit)} className='login-form'>
           <div className='form-group'>
             <label htmlFor='email' className='form-label'>

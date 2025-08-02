@@ -1,7 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { authService } from '../services/authService';
 import { useCookieService } from '../../../services/cookieService';
-
 import { useNavigate } from 'react-router-dom';
 import type { AuthResponse } from '../../../types';
 import toast from 'react-hot-toast';
@@ -24,15 +23,13 @@ export const useAuth = () => {
       navigate('/dashboard');
     },
     onError: (error: any) => {
-      toast.error(error?.response?.data?.message);
+      toast.error(error?.response?.data?.message || error?.response?.data);
     },
   });
 
   const signupMutation = useMutation({
     mutationFn: authService.signup,
     onSuccess: (data: AuthResponse) => {
-      console.log(data);
-
       toast.success(data.message!);
       const accessExpirationDate = new Date(Date.now() + data.tokens.access.expiresIn);
       const refreshExpirationDate = new Date(Date.now() + data.tokens.refresh.expiresIn);

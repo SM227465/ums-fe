@@ -1,9 +1,8 @@
-import React from 'react';
 import { useAuth } from '../features/auth/hooks/useAuth';
-import { UserRole } from '../types';
 import HierarchyTree from '../features/hierarchy/components/HierarchyTree';
+import { UserRole } from '../types';
 
-const HierarchyTreePage: React.FC = () => {
+const HierarchyTreePage = () => {
   const { user } = useAuth();
 
   if (!user) {

@@ -1,8 +1,7 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { UserRole } from '../types';
 
-const ChooseParentPage: React.FC = () => {
+const ChooseParentPage = () => {
   return (
     <div className='choose-parent-page'>
       <div className='choose-parent-container'>

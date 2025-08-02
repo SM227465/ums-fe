@@ -1,19 +1,19 @@
-import React from 'react';
 import { type User, UserRole } from '../../../types';
 import { useUsers } from '../../users/hooks/useUsers';
 
-interface HierarchyTreeProps {
+interface Props {
   currentUser: User;
 }
 
-const HierarchyTree: React.FC<HierarchyTreeProps> = ({ currentUser }) => {
+const HierarchyTree = (props: Props) => {
+  const { currentUser } = props;
   const { data: allUsers } = useUsers();
 
   const renderUserNode = (user: User, level = 0): React.ReactNode => {
-    const childUsers = allUsers?.users?.filter((u) => u.parentId === user.id) || [];
+    const childUsers = allUsers?.data?.filter((u) => u?.parentId?._id === user._id) || [];
 
     return (
-      <div key={user.id} className={`tree-node level-${level}`}>
+      <div key={user._id} className={`tree-node level-${level}`}>
         <div className='node-content'>
           <div className='user-avatar'>
             {user.firstName[0]}
@@ -36,19 +36,16 @@ const HierarchyTree: React.FC<HierarchyTreeProps> = ({ currentUser }) => {
   };
 
   const getTreeData = () => {
-    if (!allUsers?.users) return [];
+    if (!allUsers?.data) return [];
 
     switch (currentUser.role) {
       case UserRole.ADMIN:
-        // Show current admin and their hierarchy
         return [currentUser];
 
       case UserRole.SUB_ADMIN:
-        // Show current sub-admin and their users
         return [currentUser];
 
       case UserRole.USER:
-        // Show only current user
         return [currentUser];
 
       default:

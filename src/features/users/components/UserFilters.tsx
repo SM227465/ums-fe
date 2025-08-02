@@ -1,7 +1,7 @@
-import React from 'react';
+import { type ChangeEvent } from 'react';
 import { UserRole } from '../../../types';
 
-interface UserFiltersProps {
+interface Props {
   filters: {
     search: string;
     role?: UserRole;
@@ -10,12 +10,13 @@ interface UserFiltersProps {
   currentUserRole?: UserRole;
 }
 
-const UserFilters: React.FC<UserFiltersProps> = ({ filters, onFilterChange, currentUserRole }) => {
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+const UserFilters = (props: Props) => {
+  const { filters, onFilterChange, currentUserRole } = props;
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     onFilterChange({ search: e.target.value });
   };
 
-  const handleRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleRoleChange = (e: ChangeEvent<HTMLSelectElement>) => {
     onFilterChange({
       role: e.target.value ? (e.target.value as UserRole) : undefined,
     });
