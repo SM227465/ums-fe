@@ -7,10 +7,12 @@ interface Props {
 
 const HierarchyTree = (props: Props) => {
   const { currentUser } = props;
-  const { data: allUsers } = useUsers();
+  const { data: allUsers } = useUsers({ limit: 200 });
 
   const renderUserNode = (user: User, level = 0): React.ReactNode => {
     const childUsers = allUsers?.data?.filter((u) => u?.parentId?._id === user._id) || [];
+
+    console.log({ childUsers });
 
     return (
       <div key={user._id} className={`tree-node level-${level}`}>
@@ -54,6 +56,8 @@ const HierarchyTree = (props: Props) => {
   };
 
   const treeData = getTreeData();
+
+  console.log({ treeData });
 
   if (!treeData.length) {
     return (

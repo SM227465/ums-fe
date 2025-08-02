@@ -45,7 +45,6 @@ const SignupForm = () => {
     !!selectedRole && selectedRole !== UserRole.ADMIN
   );
 
-  // Reset parentId when role changes
   useEffect(() => {
     if (selectedRole === UserRole.ADMIN) {
       setValue('parentId', undefined);

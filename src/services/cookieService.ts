@@ -54,7 +54,6 @@ class CookieService {
 
 export const cookieService = new CookieService();
 
-// Hook for cookie operations (to be used in React components)
 export const useCookieService = () => {
   const [cookies, setCookie, removeCookie] = useCookies([
     COOKIE_CONFIG.TOKEN_NAME,

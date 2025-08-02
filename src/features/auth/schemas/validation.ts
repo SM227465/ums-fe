@@ -39,7 +39,6 @@ export const signupSchema = z
   })
   .refine(
     (data) => {
-      // Role-based parent validation
       if (data.role === UserRole.SUB_ADMIN && !data.parentId) {
         return false;
       }

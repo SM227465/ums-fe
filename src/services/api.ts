@@ -10,7 +10,6 @@ class ApiService {
     reject: (error?: any) => void;
   }> = [];
 
-  // Define endpoints that don't require authentication
   private excludedEndpoints = [
     API_CONFIG.ENDPOINTS.AUTH.LOGIN,
     API_CONFIG.ENDPOINTS.AUTH.SIGNUP,
@@ -36,10 +35,8 @@ class ApiService {
   }
 
   private setupInterceptors() {
-    // Request interceptor
     this.api.interceptors.request.use(
       (config: InternalAxiosRequestConfig) => {
-        // Skip adding token for excluded endpoints
         if (!this.isExcludedEndpoint(config.url || '')) {
           const token = cookieService.getToken();
           if (token) {
@@ -51,13 +48,11 @@ class ApiService {
       (error) => Promise.reject(error)
     );
 
-    // Response interceptor
     this.api.interceptors.response.use(
       (response: AxiosResponse) => response,
       async (error) => {
         const originalRequest = error.config;
 
-        // Skip refresh logic for excluded endpoints
         if (this.isExcludedEndpoint(originalRequest.url || '')) {
           return Promise.reject(error);
         }
@@ -85,7 +80,6 @@ class ApiService {
               throw new Error('No refresh token available');
             }
 
-            // Make refresh request without Authorization header
             const response = await axios.post(
               `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.AUTH.REFRESH}`,
               { refreshToken },
@@ -100,7 +94,6 @@ class ApiService {
             const newToken = tokens.access.token;
             const newRefreshToken = tokens.refresh.token;
 
-            // Update cookies with new tokens
             cookieService.setToken(newToken);
             cookieService.setRefreshToken(newRefreshToken);
 
@@ -111,7 +104,6 @@ class ApiService {
           } catch (refreshError) {
             this.processQueue(refreshError, null);
             cookieService.clearTokens();
-            // Redirect to login only if not already on auth pages
             if (
               !window.location.pathname.includes('/login') &&
               !window.location.pathname.includes('/signup')
