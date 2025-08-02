@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { UserRole } from '../../../types';
 import { useAvailableParents } from '../../users/hooks/useUsers';
 import { useAuth } from '../hooks/useAuth';
@@ -9,6 +9,7 @@ import { signupSchema, type SignupFormData } from '../schemas/validation';
 
 const SignupForm = () => {
   const { signup, isSigningUp } = useAuth();
+  const [searchParams] = useSearchParams();
 
   const {
     register,
@@ -19,7 +20,23 @@ const SignupForm = () => {
   } = useForm<SignupFormData>({
     resolver: zodResolver(signupSchema),
     mode: 'onChange',
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      role: undefined,
+      parentId: undefined,
+    },
   });
+
+  useEffect(() => {
+    const roleFromUrl = searchParams.get('role');
+    if (roleFromUrl && Object.values(UserRole).includes(roleFromUrl as UserRole)) {
+      setValue('role', roleFromUrl as UserRole);
+    }
+  }, [searchParams, setValue]);
 
   const selectedRole = watch('role');
 
@@ -130,6 +147,7 @@ const SignupForm = () => {
               id='role'
               className={`form-select ${errors.role ? 'error' : ''}`}
               {...register('role')}
+              disabled={!!searchParams.get('role')}
             >
               <option value=''>Select a role</option>
               <option value={UserRole.ADMIN}>Admin</option>

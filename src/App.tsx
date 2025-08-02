@@ -10,6 +10,7 @@ import HierarchyTreePage from './pages/HierarchyTreePage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import { Toaster } from 'react-hot-toast';
+import PublicRoute from './components/common/PublicRoute';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,9 +29,30 @@ function App() {
           <div className='app'>
             <Routes>
               {/* Public Routes */}
-              <Route path='/login' element={<LoginPage />} />
-              <Route path='/signup' element={<SignupPage />} />
-              <Route path='/choose' element={<ChooseParentPage />} />
+              <Route
+                path='/login'
+                element={
+                  <PublicRoute>
+                    <LoginPage />
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path='/signup'
+                element={
+                  <PublicRoute>
+                    <SignupPage />
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path='/choose'
+                element={
+                  <PublicRoute>
+                    <ChooseParentPage />
+                  </PublicRoute>
+                }
+              />
 
               {/* Protected Routes */}
               <Route

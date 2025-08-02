@@ -10,6 +10,7 @@ interface Props {
 const MainLayout = (props: Props) => {
   const { children } = props;
   const { user, logout } = useAuth();
+
   const location = useLocation();
 
   const getNavItems = () => {

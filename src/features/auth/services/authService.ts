@@ -1,6 +1,12 @@
 import { apiService } from '../../../services/api';
 import { API_CONFIG } from '../../../config/api';
-import type { LoginFormData, SignupFormData, AuthResponse, ApiResponse } from '../../../types';
+import type {
+  LoginFormData,
+  SignupFormData,
+  AuthResponse,
+  ApiResponse,
+  User,
+} from '../../../types';
 
 export const authService = {
   login: async (data: LoginFormData): Promise<AuthResponse> => {
@@ -14,11 +20,10 @@ export const authService = {
     return response.data;
   },
 
-  getProfile: async () => {
-    const response = await apiService.get<ApiResponse<{ user: any }>>(
-      API_CONFIG.ENDPOINTS.AUTH.PROFILE
-    );
-    return response.data.data!.user;
+  getProfile: async (): Promise<User> => {
+    const response = await apiService.get(API_CONFIG.ENDPOINTS.AUTH.PROFILE);
+
+    return response.data as User;
   },
 
   forgotPassword: async (email: string) => {
